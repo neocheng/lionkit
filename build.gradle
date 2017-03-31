@@ -27,16 +27,37 @@ android {
     }
 }
 
+// ext is a gradle closure allowing the declaration of global properties
+ext {
+    PUBLISH_GROUP_ID = "${PUBLISH_GROUP_ID}"
+    PUBLISH_ARTIFACT_ID = "${PUBLISH_ARTIFACT_ID}"
+    PUBLISH_VERSION = android.defaultConfig.versionName
+}
+
+//上传文档配置
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: LOCAL_REPO_URL){
-            authentication(userName: "netmeeting", password: "Lion9888")
+        repository(url: LOCAL_REPO_URL)
+//        def deployPath = file(getProperty('aar.path'))
+//        repository(url: "file://${deployPath.absolutePath}")
+        pom.project {
+            groupId project.PUBLISH_GROUP_ID
+            artifactId project.PUBLISH_ARTIFACT_ID
+            version project.PUBLISH_VERSION
         }
-        pom.groupId = PROJ_GROUP
-        pom.artifactId = PROJ_ARTIFACTID
-        pom.version = PROJ_VERSION
     }
 }
+
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        repository(url: LOCAL_REPO_URL){
+//            authentication(userName: "netmeeting", password: "Lion9888")
+//        }
+//        pom.groupId = PROJ_GROUP
+//        pom.artifactId = PROJ_ARTIFACTID
+//        pom.version = PROJ_VERSION
+//    }
+//}
 
 //uploadArchives {
 //    repositories {
